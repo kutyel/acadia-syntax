@@ -1,0 +1,673 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Acadia",
+  "scopeName": "source.acadia",
+  "fileTypes": [
+    "db"
+  ],
+  "firstLineMatch": "^\\s*database\\s+module\\b",
+  "patterns": [
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#module-declaration"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.unused.acadia",
+      "match": "\\b_\\b"
+    },
+    {
+      "include": "#type-signature"
+    },
+    {
+      "include": "#type-declaration"
+    },
+    {
+      "include": "#type-alias-declaration"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#record-prefix"
+    },
+    {
+      "include": "#module-prefix"
+    },
+    {
+      "include": "#constructor"
+    },
+    {
+      "include": "#record-fields"
+    },
+    {
+      "include": "#unit"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#record-accessor"
+    },
+    {
+      "include": "#top-level-value"
+    },
+    {
+      "include": "#value"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "include": "#documentation-comment"
+        },
+        {
+          "include": "#block-comment"
+        },
+        {
+          "name": "comment.line.double-dash.acadia",
+          "begin": "--",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.acadia"
+            }
+          },
+          "end": "$"
+        }
+      ]
+    },
+    "documentation-comment": {
+      "name": "comment.block.documentation.acadia",
+      "begin": "\\{-\\|",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.begin.acadia"
+        }
+      },
+      "end": "-\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.end.acadia"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "block-comment": {
+      "name": "comment.block.acadia",
+      "begin": "\\{-",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.begin.acadia"
+        }
+      },
+      "end": "-\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.end.acadia"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.acadia",
+          "begin": "\"\"\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.acadia"
+            }
+          },
+          "end": "\"\"\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.acadia"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.acadia",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.acadia"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.acadia"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.acadia",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.begin.acadia"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.end.acadia"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            }
+          ]
+        }
+      ]
+    },
+    "string-escapes": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.acadia",
+          "match": "\\\\(?:[nrtbfv\\\\'\"]|u\\{[0-9A-Fa-f]+\\}|x[0-9A-Fa-f]{1,5})"
+        },
+        {
+          "name": "invalid.illegal.escape.acadia",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "imports": {
+      "name": "meta.import.acadia",
+      "begin": "^\\s*(import)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.import.acadia"
+        }
+      },
+      "end": "\\n(?!\\s)",
+      "patterns": [
+        {
+          "name": "keyword.control.acadia",
+          "match": "\\b(?:as|exposing)\\b"
+        },
+        {
+          "include": "#module-chunk"
+        },
+        {
+          "include": "#period"
+        },
+        {
+          "include": "#module-exports"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "module-declaration": {
+      "name": "meta.declaration.module.acadia",
+      "begin": "^\\s*(database)(\\s+)(module)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.acadia"
+        },
+        "3": {
+          "name": "keyword.other.acadia"
+        }
+      },
+      "end": "\\n(?!\\s)",
+      "patterns": [
+        {
+          "include": "#module-chunk"
+        },
+        {
+          "include": "#period"
+        },
+        {
+          "name": "keyword.other.acadia",
+          "match": "\\bexposing\\b"
+        },
+        {
+          "include": "#module-exports"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "module-exports": {
+      "name": "meta.declaration.exports.acadia",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.parens.module-export.acadia"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.parens.module-export.acadia"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\b(endpoint)(\\s+)([a-z][A-Za-z0-9_']*)",
+          "captures": {
+            "1": {
+              "name": "keyword.other.acadia"
+            },
+            "3": {
+              "name": "entity.name.function.acadia"
+            }
+          }
+        },
+        {
+          "name": "entity.name.function.acadia",
+          "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "storage.type.acadia",
+          "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "punctuation.parens.ellipses.acadia",
+          "match": "\\.\\."
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "module-chunk": {
+      "name": "support.module.acadia",
+      "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+    },
+    "period": {
+      "name": "keyword.other.period.acadia",
+      "match": "\\."
+    },
+    "module-prefix": {
+      "name": "meta.module.name.acadia",
+      "match": "([A-Z][A-Za-z0-9_']*)(\\.)",
+      "captures": {
+        "1": {
+          "name": "support.module.acadia"
+        },
+        "2": {
+          "name": "keyword.other.period.acadia"
+        }
+      }
+    },
+    "type-declaration": {
+      "name": "meta.function.type-declaration.acadia",
+      "begin": "^(type\\s+)([A-Z][A-Za-z0-9_']*)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.type.acadia"
+        },
+        "2": {
+          "name": "storage.type.acadia"
+        }
+      },
+      "end": "^(?=\\S)",
+      "patterns": [
+        {
+          "match": "(?:=|\\|)\\s*([A-Z][A-Za-z0-9_']*)\\b",
+          "captures": {
+            "0": {
+              "name": "meta.type-constructor.acadia"
+            },
+            "1": {
+              "name": "constant.type-constructor.acadia"
+            }
+          }
+        },
+        {
+          "name": "keyword.operator.assignment.acadia",
+          "match": "=|\\|"
+        },
+        {
+          "include": "#module-prefix"
+        },
+        {
+          "name": "variable.type.acadia",
+          "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "storage.type.acadia",
+          "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "include": "#type-record"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "type-alias-declaration": {
+      "name": "meta.function.type-declaration.acadia",
+      "begin": "^(type\\s+)(alias\\s+)([A-Z][A-Za-z0-9_']*)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.type.acadia"
+        },
+        "2": {
+          "name": "keyword.type-alias.acadia"
+        },
+        "3": {
+          "name": "storage.type.acadia"
+        }
+      },
+      "end": "^(?=\\S)",
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.acadia",
+          "match": "="
+        },
+        {
+          "include": "#module-prefix"
+        },
+        {
+          "name": "storage.type.acadia",
+          "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "variable.type.acadia",
+          "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "include": "#type-record"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "type-signature": {
+      "name": "meta.function.type-declaration.acadia",
+      "begin": "^([a-z_][A-Za-z0-9_']*)\\s+(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.acadia"
+        },
+        "2": {
+          "name": "keyword.other.colon.acadia"
+        }
+      },
+      "end": "^(?=\\S)|^$",
+      "patterns": [
+        {
+          "include": "#type-signature-chunk"
+        }
+      ]
+    },
+    "type-signature-chunk": {
+      "patterns": [
+        {
+          "name": "keyword.operator.arrow.acadia",
+          "match": "->"
+        },
+        {
+          "include": "#module-prefix"
+        },
+        {
+          "name": "variable.type.acadia",
+          "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "storage.type.acadia",
+          "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "include": "#unit"
+        },
+        {
+          "include": "#type-record"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "type-record": {
+      "name": "meta.function.type-record.acadia",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.braces.begin.acadia"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.braces.end.acadia"
+        }
+      },
+      "patterns": [
+        {
+          "match": "([a-z][A-Za-z0-9_']*)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "entity.name.record.field.acadia"
+            },
+            "2": {
+              "name": "keyword.other.acadia"
+            }
+          }
+        },
+        {
+          "name": "keyword.operator.arrow.acadia",
+          "match": "->"
+        },
+        {
+          "include": "#module-prefix"
+        },
+        {
+          "name": "variable.type.acadia",
+          "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "name": "storage.type.acadia",
+          "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+        },
+        {
+          "include": "#type-record"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "record-prefix": {
+      "name": "record.accessor.acadia",
+      "match": "([a-z][A-Za-z0-9_']*)(\\.)([a-z][A-Za-z0-9_']*)",
+      "captures": {
+        "1": {
+          "name": "record.name.acadia"
+        },
+        "2": {
+          "name": "keyword.other.period.acadia"
+        },
+        "3": {
+          "name": "entity.name.record.field.accessor.acadia"
+        }
+      }
+    },
+    "record-accessor": {
+      "name": "meta.record.accessor.acadia",
+      "match": "(\\.)([a-z][A-Za-z0-9_']*)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.period.acadia"
+        },
+        "2": {
+          "name": "entity.name.record.field.accessor.acadia"
+        }
+      }
+    },
+    "record-fields": {
+      "patterns": [
+        {
+          "name": "meta.record.field.update.acadia",
+          "match": "(\\{)\\s*([a-z][A-Za-z0-9_']*)\\s*(\\|)\\s*([a-z][A-Za-z0-9_']*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.bracket.acadia"
+            },
+            "2": {
+              "name": "record.name.acadia"
+            },
+            "3": {
+              "name": "keyword.pipe.acadia"
+            },
+            "4": {
+              "name": "entity.name.record.field.acadia"
+            }
+          }
+        },
+        {
+          "match": "(?:\\{|,|\\|)\\s*([a-z][A-Za-z0-9_']*)\\s*(=)",
+          "captures": {
+            "1": {
+              "name": "entity.name.record.field.acadia"
+            },
+            "2": {
+              "name": "keyword.operator.assignment.acadia"
+            }
+          }
+        }
+      ]
+    },
+    "constructor": {
+      "name": "constant.type-constructor.acadia",
+      "match": "\\b[A-Z][A-Za-z0-9_']*\\b"
+    },
+    "top-level-value": {
+      "name": "entity.name.function.top_level.acadia",
+      "match": "^[a-z][A-Za-z0-9_']*\\b"
+    },
+    "value": {
+      "name": "meta.value.acadia",
+      "match": "\\b[a-z][A-Za-z0-9_']*\\b"
+    },
+    "unit": {
+      "name": "constant.unit.acadia",
+      "match": "\\(\\)"
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.acadia",
+          "match": "\\b0[xX][0-9A-Fa-f]+\\b"
+        },
+        {
+          "name": "constant.numeric.float.acadia",
+          "match": "\\b(?:[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)\\b"
+        },
+        {
+          "name": "constant.numeric.acadia",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.transaction.acadia",
+          "match": ":="
+        },
+        {
+          "name": "keyword.operator.arrow.acadia",
+          "match": "->"
+        },
+        {
+          "name": "keyword.operator.acadia",
+          "match": "</>|<\\?>|<\\||<=|\\|\\||&&|>=|\\|>|\\|=|\\|\\.|\\+\\+|::|/=|==|//|>>|<<|<|>|\\^|\\+|-|/|\\*"
+        },
+        {
+          "name": "keyword.other.acadia",
+          "match": "=(?!=)|:(?![:=])|\\|(?![>|])|\\\\"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.acadia",
+          "match": "\\b(?:case|else|if|in|let|of|then)\\b"
+        },
+        {
+          "name": "keyword.other.acadia",
+          "match": "\\b(?:alias|as|database|endpoint|exposing|import|module|type)\\b"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.comma.acadia",
+          "match": ","
+        },
+        {
+          "name": "punctuation.parens.acadia",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.definition.list.acadia",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.bracket.acadia",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.separator.acadia",
+          "match": ";"
+        }
+      ]
+    }
+  }
+}

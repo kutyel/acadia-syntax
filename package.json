@@ -1,0 +1,75 @@
+{
+  "name": "acadia-syntax",
+  "displayName": "Acadia Syntax",
+  "description": "Syntax highlighting and editor support for Acadia database language files.",
+  "version": "0.1.1",
+  "publisher": "kvothe",
+  "author": "Flavio Corpa <flaviocorpa@gmail.com> (https://flaviocorpa.com)",
+  "license": "MIT",
+  "homepage": "https://flaviocorpa.com",
+  "bugs": {
+    "email": "flaviocorpa@gmail.com"
+  },
+  "type": "module",
+  "packageManager": "pnpm@10.11.1",
+  "preview": true,
+  "galleryBanner": {
+    "color": "#06283A",
+    "theme": "dark"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": true
+    }
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "acadia",
+    "database",
+    "elm",
+    "functional programming",
+    "textmate",
+    "syntax highlighting"
+  ],
+  "scripts": {
+    "test": "tsc --noEmit && tsx ./scripts/validate.ts",
+    "vsce:package": "vsce package --allow-missing-repository",
+    "vsce:publish": "vsce publish --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vscode/vsce": "^3.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "acadia",
+        "aliases": [
+          "Acadia",
+          "acadia"
+        ],
+        "extensions": [
+          ".db"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "acadia",
+        "scopeName": "source.acadia",
+        "path": "./syntaxes/acadia.tmLanguage.json"
+      }
+    ]
+  }
+}
