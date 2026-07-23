@@ -31,7 +31,7 @@ Create a VSIX with the pinned Microsoft publishing tool:
 
 ```sh
 pnpm vsce:package
-code --install-extension acadia-syntax-0.1.1.vsix
+code --install-extension acadia-syntax-0.1.2.vsix
 ```
 
 Install the TypeScript development tools and run the structural checks with:
@@ -50,8 +50,8 @@ for binary SQLite databases. VS Code may therefore select Acadia for an unrelate
 ## Publishing to the Marketplace
 
 The extension is configured for the `kvothe` Visual Studio Marketplace
-publisher. The source repository is intentionally private, so the VSCE scripts
-use `--allow-missing-repository` and do not expose a repository URL.
+publisher. Its source, issue tracker, and release history are available in the
+[Acadia Syntax GitHub repository](https://github.com/kutyel/acadia-syntax).
 
 After authenticating VSCE as `kvothe`, publish with:
 

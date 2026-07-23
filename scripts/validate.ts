@@ -20,9 +20,16 @@ interface ExtensionManifest {
   author?: string;
   license?: string;
   homepage?: string;
+  bugs?: {
+    url?: string;
+  };
+  icon?: string;
   packageManager?: string;
   preview?: boolean;
-  repository?: unknown;
+  repository?: {
+    type?: string;
+    url?: string;
+  };
   scripts?: Record<string, string>;
   contributes?: {
     languages?: LanguageContribution[];
@@ -47,7 +54,6 @@ interface TextMateGrammar extends GrammarPattern {
 }
 
 const extensionRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const repositoryRoot = resolve(extensionRoot, "..");
 
 const readJson = <Value>(path: string): Value =>
   JSON.parse(readFileSync(path, "utf8")) as Value;
@@ -75,8 +81,11 @@ if (manifest.author !== "Flavio Corpa <flaviocorpa@gmail.com> (https://flaviocor
 if (manifest.license !== "MIT") {
   fail("The extension must declare the MIT license.");
 }
-if (manifest.homepage !== "https://flaviocorpa.com") {
-  fail("The extension homepage is missing.");
+if (manifest.homepage !== "https://github.com/kutyel/acadia-syntax#readme") {
+  fail("The extension homepage must link to the public repository.");
+}
+if (manifest.bugs?.url !== "https://github.com/kutyel/acadia-syntax/issues") {
+  fail("The extension issue tracker must link to the public repository.");
 }
 if (!manifest.packageManager?.startsWith("pnpm@")) {
   fail("The extension must declare pnpm as its package manager.");
@@ -84,20 +93,33 @@ if (!manifest.packageManager?.startsWith("pnpm@")) {
 if (manifest.preview !== true) {
   fail("Pre-1.0 Marketplace releases must be marked as previews.");
 }
-if (manifest.repository !== undefined) {
-  fail("Repository metadata must stay private until publication is authorized.");
+if (
+  manifest.repository?.type !== "git" ||
+  manifest.repository.url !== "https://github.com/kutyel/acadia-syntax.git"
+) {
+  fail("The extension must declare its public GitHub repository.");
+}
+if (manifest.icon !== "logo.png") {
+  fail("The extension must use the Marketplace-compatible PNG logo.");
 }
 
 for (const [script, command] of [
-  ["vsce:package", "vsce package --allow-missing-repository"],
-  ["vsce:publish", "vsce publish --allow-missing-repository"]
+  ["vsce:package", "vsce package"],
+  ["vsce:publish", "vsce publish"]
 ] as const) {
   if (manifest.scripts?.[script] !== command) {
-    fail(`The ${script} script is not configured for a private repository.`);
+    fail(`The ${script} script is not configured for the public repository.`);
   }
 }
 
-for (const filename of ["README.md", "CHANGELOG.md", "SUPPORT.md", "LICENSE"]) {
+for (const filename of [
+  "README.md",
+  "CHANGELOG.md",
+  "SUPPORT.md",
+  "LICENSE",
+  "logo.svg",
+  "logo.png"
+]) {
   if (!existsSync(join(extensionRoot, filename))) {
     fail(`Required Marketplace file ${filename} is missing.`);
   }
@@ -234,7 +256,7 @@ const findFiles = (directory: string, extension: string): string[] =>
         : [];
   });
 
-const samples = findFiles(join(repositoryRoot, "examples"), ".db");
+const samples = findFiles(join(extensionRoot, "examples"), ".db");
 if (samples.length === 0) {
   fail("No Acadia .db examples were found for validation.");
 }

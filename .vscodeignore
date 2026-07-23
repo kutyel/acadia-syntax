@@ -1,5 +1,7 @@
 .vscode/**
 .gitignore
+examples/**
+logo.svg
 node_modules/**
 scripts/**
 tsconfig.json

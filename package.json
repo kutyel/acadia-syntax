@@ -2,14 +2,20 @@
   "name": "acadia-syntax",
   "displayName": "Acadia Syntax",
   "description": "Syntax highlighting and editor support for Acadia database language files.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "kvothe",
   "author": "Flavio Corpa <flaviocorpa@gmail.com> (https://flaviocorpa.com)",
   "license": "MIT",
-  "homepage": "https://flaviocorpa.com",
+  "homepage": "https://github.com/kutyel/acadia-syntax#readme",
   "bugs": {
+    "url": "https://github.com/kutyel/acadia-syntax/issues",
     "email": "flaviocorpa@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kutyel/acadia-syntax.git"
+  },
+  "icon": "logo.png",
   "type": "module",
   "packageManager": "pnpm@10.11.1",
   "preview": true,
@@ -41,8 +47,8 @@
   ],
   "scripts": {
     "test": "tsc --noEmit && tsx ./scripts/validate.ts",
-    "vsce:package": "vsce package --allow-missing-repository",
-    "vsce:publish": "vsce publish --allow-missing-repository"
+    "vsce:package": "vsce package",
+    "vsce:publish": "vsce publish"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
